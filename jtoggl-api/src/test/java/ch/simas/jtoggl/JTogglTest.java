@@ -19,6 +19,9 @@
 package ch.simas.jtoggl;
 
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -33,7 +36,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- *
  * @author Simon Martinelli
  */
 public class JTogglTest {
@@ -65,7 +67,7 @@ public class JTogglTest {
         client = createClient();
         project = createProject();
         timeEntry = createTimeEntry(project);
-        task = createTask();
+        //task = createTask();
     }
 
     @AfterClass
@@ -91,7 +93,8 @@ public class JTogglTest {
     public void getTimeEntriesWithRange() {
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 11, 10);
-        List<TimeEntry> entries = jToggl.getTimeEntries(cal.getTime(), cal.getTime());
+        OffsetDateTime date = OffsetDateTime.of(2011, 12, 10, 0, 0, 0, 0, ZoneOffset.ofHours(1));
+        List<TimeEntry> entries = jToggl.getTimeEntries(date, date);
 
         Assert.assertTrue(entries.isEmpty());
     }
@@ -268,7 +271,8 @@ public class JTogglTest {
         Optional<TimeEntry> entry = detailedReport.getEntries().stream().filter(e -> e.getDescription().equals("From JUnit Test")).findFirst();
         Assert.assertTrue(entry.isPresent());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         Assert.assertEquals(formatter.format(timeEntry.getStart()), formatter.format(entry.get().getStart()));
         Assert.assertEquals(formatter.format(timeEntry.getStop()), formatter.format(entry.get().getStop()));
         Assert.assertEquals(timeEntry.getId(), entry.get().getId());
@@ -278,11 +282,13 @@ public class JTogglTest {
         TimeEntry entry = new TimeEntry();
         entry.setDuration(480L);
         entry.setBillable(true);
-        Calendar cal = Calendar.getInstance();
-        cal.set(2011, 10, 15, 8, 0);
-        entry.setStart(cal.getTime());
-        cal.set(2011, 10, 15, 16, 0);
-        entry.setStop(cal.getTime());
+        //Calendar cal = Calendar.getInstance();
+        //cal.set(2011, 10, 15, 8, 0);*/
+        OffsetDateTime start = OffsetDateTime.of(2011, 11, 15, 8, 0, 0, 0, ZoneOffset.ofHours(1));
+        entry.setStart(start);
+        //cal.set(2011, 10, 15, 16, 0);
+        OffsetDateTime stop = OffsetDateTime.of(2011, 11, 15, 16, 0, 0, 0, ZoneOffset.ofHours(1));
+        entry.setStop(stop);
         entry.setDescription("From JUnit Test");
         entry.setCreated_with("JUnit");
         entry.setPid(project.getId());

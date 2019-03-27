@@ -18,6 +18,7 @@
  */
 package ch.simas.jtoggl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,7 +129,7 @@ public class JToggl {
      * @param endDate
      * @return list of {@link TimeEntry}
      */
-    public List<TimeEntry> getTimeEntries(Date startDate, Date endDate) {
+    public List<TimeEntry> getTimeEntries(OffsetDateTime startDate, OffsetDateTime endDate) {
         HashMap<String,String> queryParams = new HashMap<>();
         if (startDate != null && endDate != null) {
             queryParams.put("start_date", DateUtil.convertDateToString(startDate));

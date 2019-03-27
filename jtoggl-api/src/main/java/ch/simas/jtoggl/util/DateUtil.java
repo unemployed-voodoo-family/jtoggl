@@ -20,6 +20,11 @@ package ch.simas.jtoggl.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +36,8 @@ import java.util.logging.Logger;
 public class DateUtil {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final DateTimeFormatter df = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
 
     private DateUtil() {
     }
@@ -49,6 +56,13 @@ public class DateUtil {
         return date;
     }
 
+    public static OffsetDateTime convertStringToOffsetDate(String dateString) {
+        if (dateString == null)
+            return null;
+
+        return OffsetDateTime.from(df.parse(dateString));
+    }
+
     public static String convertDateToString(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		int timezoneOffset = date.getTimezoneOffset();
@@ -57,5 +71,10 @@ public class DateUtil {
 		String dateTime = sdf.format(date);
 		String timeOffset = (timezoneOffset <= 0 ? "+" : "-") + (hour < 10 ? "0" : "") + hour + ":" + (min < 10 ? "0" : "") + min;
 		return dateTime + timeOffset;
+    }
+
+    public static String convertDateToString(OffsetDateTime date) {
+		String dateTime = df.format(date);
+		return dateTime;
     }
 }

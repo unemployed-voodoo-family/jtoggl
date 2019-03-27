@@ -18,8 +18,8 @@
  */
 package ch.simas.jtoggl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ch.simas.jtoggl.util.DateUtil;
@@ -36,8 +36,8 @@ public class TimeEntry {
     private Long id;
     private String description;
     private Project project;
-    private Date start;
-    private Date stop;
+    private OffsetDateTime start;
+    private OffsetDateTime stop;
     private Long duration;
     private Boolean billable;
     private Workspace workspace;
@@ -56,11 +56,11 @@ public class TimeEntry {
         JSONObject object = (JSONObject) JSONValue.parse(jsonString);
         this.id = (Long) object.get("id");
         this.description = (String) object.get("description");
-        this.start = DateUtil.convertStringToDate((String) object.get("start"));
+        this.start = DateUtil.convertStringToOffsetDate((String) object.get("start"));
         if (object.containsKey("end")) {
-            this.stop = DateUtil.convertStringToDate((String) object.get("end"));
+            this.stop = DateUtil.convertStringToOffsetDate((String) object.get("end"));
         } else {
-            this.stop = DateUtil.convertStringToDate((String) object.get("stop"));
+            this.stop = DateUtil.convertStringToOffsetDate((String) object.get("stop"));
         }
         if (object.containsKey("dur")) {
             this.duration = (Long) object.get("dur");
@@ -153,19 +153,19 @@ public class TimeEntry {
 		this.pid = project.getId();
     }
 
-    public Date getStart() {
+    public OffsetDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(OffsetDateTime start) {
         this.start = start;
     }
 
-    public Date getStop() {
+    public OffsetDateTime getStop() {
         return stop;
     }
 
-    public void setStop(Date stop) {
+    public void setStop(OffsetDateTime stop) {
         this.stop = stop;
     }
 
