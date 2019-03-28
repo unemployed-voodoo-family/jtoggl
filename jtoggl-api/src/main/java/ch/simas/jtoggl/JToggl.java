@@ -58,32 +58,32 @@ public class JToggl {
     private static final String PLACEHOLDER = "{0}";
     private static final String SIMPLE_ID_PATH = "/" + PLACEHOLDER;
 
-    private final static String TIME_ENTRIES = API_BASE + "time_entries";
-    private final static String TIME_ENTRY_BY_ID = TIME_ENTRIES + SIMPLE_ID_PATH;
-    private final static String TIME_ENTRY_CURRENT = TIME_ENTRIES + "/current";
-    private final static String TIME_ENTRY_START = TIME_ENTRIES + "/start";
-    private final static String TIME_ENTRY_STOP = TIME_ENTRIES + SIMPLE_ID_PATH + "/stop";
+    private static final String TIME_ENTRIES = API_BASE + "time_entries";
+    private static final String TIME_ENTRY_BY_ID = TIME_ENTRIES + SIMPLE_ID_PATH;
+    private static final String TIME_ENTRY_CURRENT = TIME_ENTRIES + "/current";
+    private static final String TIME_ENTRY_START = TIME_ENTRIES + "/start";
+    private static final String TIME_ENTRY_STOP = TIME_ENTRIES + SIMPLE_ID_PATH + "/stop";
 
-    private final static String WORKSPACES = API_BASE + "workspaces";
-    private final static String WORKSPACE_BY_ID = WORKSPACES + SIMPLE_ID_PATH;
-    private final static String WORKSPACE_USERS = WORKSPACE_BY_ID + "/users";
-    private final static String WORKSPACE_PROJECTS = WORKSPACE_BY_ID + "/projects";
-    private final static String WORKSPACE_TASKS = WORKSPACE_BY_ID + "/tasks";
-    private final static String WORKSPACE_CLIENTS = WORKSPACE_BY_ID + "/clients";
+    private static final String WORKSPACES = API_BASE + "workspaces";
+    private static final String WORKSPACE_BY_ID = WORKSPACES + SIMPLE_ID_PATH;
+    private static final String WORKSPACE_USERS = WORKSPACE_BY_ID + "/users";
+    private static final String WORKSPACE_PROJECTS = WORKSPACE_BY_ID + "/projects";
+    private static final String WORKSPACE_TASKS = WORKSPACE_BY_ID + "/tasks";
+    private static final String WORKSPACE_CLIENTS = WORKSPACE_BY_ID + "/clients";
 
-    private final static String CLIENTS = API_BASE + "clients";
-    private final static String CLIENT_BY_ID = CLIENTS + SIMPLE_ID_PATH;
+    private static final String CLIENTS = API_BASE + "clients";
+    private static final String CLIENT_BY_ID = CLIENTS + SIMPLE_ID_PATH;
 
-    private final static String PROJECTS = API_BASE + "projects";
-    private final static String PROJECT_BY_ID = PROJECTS + SIMPLE_ID_PATH;
+    private static final String PROJECTS = API_BASE + "projects";
+    private static final String PROJECT_BY_ID = PROJECTS + SIMPLE_ID_PATH;
 
-    private final static String TASKS = API_BASE + "tasks";
-    private final static String TASK_BY_ID = TASKS + SIMPLE_ID_PATH;
+    private static final String TASKS = API_BASE + "tasks";
+    private static final String TASK_BY_ID = TASKS + SIMPLE_ID_PATH;
 
-    private final static String TAGS = API_BASE + "tags";
+    private static final String TAGS = API_BASE + "tags";
 
-    private final static String PROJECT_USERS = WORKSPACES + "/673279/project_users";
-    private final static String GET_CURRENT_USER = API_BASE + "me";
+    private static final String PROJECT_USERS = WORKSPACES + "/673279/project_users";
+    private static final String GET_CURRENT_USER = API_BASE + "me";
     private final String user;
     private final String password;
     
@@ -139,7 +139,7 @@ public class JToggl {
         String response = fetch(TIME_ENTRIES, queryParams);
         JSONArray data = (JSONArray) JSONValue.parse(response);
 
-        List<TimeEntry> entries = new ArrayList<TimeEntry>();
+        List<TimeEntry> entries = new ArrayList<>();
         if (data != null) {
 	        for (Object obj : data) {
 	            JSONObject entryObject = (JSONObject) obj;
@@ -521,7 +521,7 @@ public class JToggl {
 		String response = fetch(url);
 		JSONArray data = (JSONArray) JSONValue.parse(response);
 
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		if (data != null) {
 			for (Object obj : data) {
 				JSONObject entryObject = (JSONObject) obj;
@@ -544,7 +544,7 @@ public class JToggl {
 		String response = fetch(url);
 		JSONArray data = (JSONArray) JSONValue.parse(response);
 
-		List<Project> projects = new ArrayList<Project>();
+		List<Project> projects = new ArrayList<>();
 		if (data != null) {
 			for (Object obj : data) {
 				JSONObject entryObject = (JSONObject) obj;
@@ -566,7 +566,7 @@ public class JToggl {
 		String response = fetch(url);
 		JSONArray data = (JSONArray) JSONValue.parse(response);
 
-        List<ch.simas.jtoggl.Client> clients = new ArrayList<ch.simas.jtoggl.Client>();
+        List<ch.simas.jtoggl.Client> clients = new ArrayList<>();
         if (data != null) {
 	        for (Object obj : data) {
 	            JSONObject entryObject = (JSONObject) obj;
@@ -588,7 +588,7 @@ public class JToggl {
 		String response = fetch(url);
 		JSONArray data = (JSONArray) JSONValue.parse(response);
 
-		List<Task> tasks = new ArrayList<Task>();
+		List<Task> tasks = new ArrayList<>();
 		if (data != null) {
 			for (Object obj : data) {
 				JSONObject entryObject = (JSONObject) obj;
@@ -604,13 +604,13 @@ public class JToggl {
 	 * @return all users in all workspaces
 	 */
 	public List<User> getUsers() {
-		HashSet<User> result = new HashSet<User>();
+		HashSet<User> result = new HashSet<>();
 		Map<Long, Workspace> workspaces = getWorkspaces();
 		for (Map.Entry<Long, Workspace> workspace : workspaces.entrySet()) {
 			List<User> workspaceUsers = getWorkspaceUsers(workspace.getValue().getId());
 			result.addAll(workspaceUsers);
 		}
-		return new ArrayList<User>(result);
+		return new ArrayList<>(result);
 	}
 
     public PagedResult getDetailedReport(PagedReportsParameter parameters) {

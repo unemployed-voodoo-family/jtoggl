@@ -35,6 +35,7 @@ public class Project {
     private Boolean is_private;
     private Boolean template;
     private Long cid;
+    private Client client;
 
     public Project() {
     }
@@ -48,12 +49,17 @@ public class Project {
         this.is_private = (Boolean) object.get("is_private");
         this.template = (Boolean) object.get("template");
         this.cid= (Long) object.get("cid");
+        this.client = null;
 
         JSONObject workspaceObject = (JSONObject) object.get("workspace");
         if (workspaceObject != null) {
             this.workspace = new Workspace(workspaceObject.toJSONString());
         }
 
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Long getId() {
