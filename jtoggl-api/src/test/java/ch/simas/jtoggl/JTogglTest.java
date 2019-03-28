@@ -19,11 +19,7 @@
 package ch.simas.jtoggl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,7 +29,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- *
  * @author Simon Martinelli
  */
 public class JTogglTest {
@@ -58,14 +53,13 @@ public class JTogglTest {
         jToggl.setThrottlePeriod(500l);
         jToggl.switchLoggingOn();
 
-        List<Workspace> workspaces = jToggl.getWorkspaces();
+        LinkedHashMap<Long, Workspace> workspaces = (LinkedHashMap<Long, Workspace>) jToggl.getWorkspaces();
         assertTrue(workspaces.size() > 0);
-        workspace = workspaces.get(0);
-
+        workspace = workspaces.entrySet().iterator().next().getValue();
         client = createClient();
         project = createProject();
         timeEntry = createTimeEntry(project);
-        task = createTask();
+        //task = createTask();
     }
 
     @AfterClass
@@ -174,14 +168,14 @@ public class JTogglTest {
 
     @Test
     public void getWorkspaces() {
-        List<Workspace> workspaces = jToggl.getWorkspaces();
+        Map<Long, Workspace> workspaces = jToggl.getWorkspaces();
 
         Assert.assertFalse(workspaces.isEmpty());
     }
 
     @Test
     public void getClients() {
-        List<Client> clients = jToggl.getClients();
+        Map<Long, Client> clients = jToggl.getClients();
 
         Assert.assertFalse(clients.isEmpty());
     }
@@ -198,7 +192,7 @@ public class JTogglTest {
 
     @Test
     public void getProjects() {
-        List<Project> projects = jToggl.getProjects();
+        Map<Long, Project> projects = jToggl.getProjects();
 
         Assert.assertFalse(projects.isEmpty());
     }
@@ -220,11 +214,11 @@ public class JTogglTest {
     @Test
     public void getTasks() {
         boolean isPremium = false;
-        List<Workspace> workspaces = jToggl.getWorkspaces();
+        Map<Long, Workspace> workspaces = jToggl.getWorkspaces();
         if (!workspaces.isEmpty()) {
             isPremium = workspaces.get(0).getPremium();
         }
-        List<Task> tasks = jToggl.getTasks();
+        Map<Long, Task> tasks = jToggl.getTasks();
 
         // TODO Task is only available in payed version
         Assert.assertFalse(isPremium && tasks.isEmpty());
@@ -305,10 +299,10 @@ public class JTogglTest {
     }
 
     private static Project createProject() {
-        List<Project> projects = jToggl.getProjects();
-        for (Project project : projects) {
-            if ("JUnit Project".equals(project.getName())) {
-                return project;
+        Map<Long, Project> projects = jToggl.getProjects();
+        for (HashMap.Entry<Long, Project> project : projects.entrySet()) {
+            if ("JUnit Project".equals(project.getValue().getName())) {
+                return project.getValue();
             }
         }
 
@@ -316,8 +310,8 @@ public class JTogglTest {
         pr.setName("JUnit Project");
         pr.setCid(client.getId());
 
-        List<Workspace> ws = jToggl.getWorkspaces();
-        pr.setWorkspace(ws.get(0));
+        Map<Long, Workspace> ws = jToggl.getWorkspaces();
+        pr.setWorkspace(ws.get(ws.values().iterator().next()));
 
         pr = jToggl.createProject(pr);
         Assert.assertNotNull(pr);
