@@ -203,7 +203,11 @@ public class JTogglTest {
         Project pr = jToggl.updateProject(project);
 
         Assert.assertNotNull(pr);
-        Assert.assertTrue(pr.isBillable());
+        if (workspace.getPremium()) {
+            Assert.assertTrue(pr.isBillable());
+        } else {
+            Assert.assertFalse(pr.isBillable());
+        }
     }
 
     @Test
@@ -216,7 +220,7 @@ public class JTogglTest {
         boolean isPremium = false;
         Map<Long, Workspace> workspaces = jToggl.getWorkspaces();
         if (!workspaces.isEmpty()) {
-            isPremium = workspaces.get(0).getPremium();
+            isPremium = workspace.getPremium();
         }
         Map<Long, Task> tasks = jToggl.getTasks();
 
@@ -226,13 +230,15 @@ public class JTogglTest {
 
     @Test
     public void updateTask() {
-        task.setIs_active(false);
-        try {
-            Task t = jToggl.updateTask(task);
-            Assert.assertNotNull(t);
-            Assert.assertFalse(t.isIs_active());
-        } catch (Exception e) {
-            // Ignore because Task is only for paying customers
+        if (workspace.getPremium()) {
+            task.setIs_active(false);
+            try {
+                Task t = jToggl.updateTask(task);
+                Assert.assertNotNull(t);
+                Assert.assertFalse(t.isIs_active());
+            } catch (Exception e) {
+                // Ignore because Task is only for paying customers
+            }
         }
     }
 
