@@ -278,11 +278,11 @@ public class JToggl {
      * 
      * @return list of {@link Workspace}
      */
-    public Map<Long, Workspace> getWorkspaces() {
+    public LinkedHashMap<Long, Workspace> getWorkspaces() {
         String response = fetch(WORKSPACES);
         JSONArray data = (JSONArray) JSONValue.parse(response);
 
-        Map<Long, Workspace> workspaces = new LinkedHashMap<>();
+        LinkedHashMap<Long, Workspace> workspaces = new LinkedHashMap<>();
         if (data != null) {
 	        for (Object obj : data) {
 	            JSONObject entryObject = (JSONObject) obj;
@@ -298,11 +298,11 @@ public class JToggl {
      * 
      * @return list of {@link ch.simas.jtoggl.Client}
      */
-    public Map<Long, ch.simas.jtoggl.Client> getClients() {
+    public HashMap<Long, ch.simas.jtoggl.Client> getClients() {
         String response = fetch(CLIENTS);
         JSONArray data = (JSONArray) JSONValue.parse(response);
 
-        Map<Long, ch.simas.jtoggl.Client> clients = new HashMap<>();
+        HashMap<Long, ch.simas.jtoggl.Client> clients = new HashMap<>();
         if (data != null) {
 	        for (Object obj : data) {
 	            JSONObject entryObject = (JSONObject) obj;
@@ -362,10 +362,10 @@ public class JToggl {
      * 
      * @return list of {@link Project}
      */
-    public Map<Long, Project> getProjects() {
-        Map<Long, Project> projects = new HashMap();
-        
-        Map<Long, Workspace> workspaces = getWorkspaces();
+    public HashMap<Long, Project> getProjects() {
+        HashMap<Long, Project> projects = new HashMap();
+
+        HashMap<Long, Workspace> workspaces = getWorkspaces();
         for (Map.Entry<Long, Workspace> workspace : workspaces.entrySet()) {
 			List<Project> workspaceProjects = getWorkspaceProjects(workspace.getValue().getId());
 			for (Project project : workspaceProjects) {
@@ -429,10 +429,10 @@ public class JToggl {
      * 
      * @return list of {@link Task}
      */
-    public Map<Long, Task> getTasks() {
-        Map<Long, Task> tasks = new HashMap();
-        
-        Map<Long, Workspace> workspaces = getWorkspaces();
+    public HashMap<Long, Task> getTasks() {
+        HashMap<Long, Task> tasks = new HashMap();
+
+        HashMap<Long, Workspace> workspaces = getWorkspaces();
         for (Map.Entry<Long, Workspace> workspace : workspaces.entrySet()) {
 			List<Task> workspaceTasks = getActiveWorkspaceTasks(workspace.getValue().getId());
 			for (Task task : workspaceTasks) {
@@ -605,7 +605,7 @@ public class JToggl {
 	 */
 	public List<User> getUsers() {
 		HashSet<User> result = new HashSet<>();
-		Map<Long, Workspace> workspaces = getWorkspaces();
+        LinkedHashMap<Long, Workspace> workspaces = getWorkspaces();
 		for (Map.Entry<Long, Workspace> workspace : workspaces.entrySet()) {
 			List<User> workspaceUsers = getWorkspaceUsers(workspace.getValue().getId());
 			result.addAll(workspaceUsers);
