@@ -92,6 +92,8 @@ public class TimeEntry {
             this.project = new Project();
             this.project.setName((String) project);
             this.project.setId(this.pid);
+        } else {
+            this.project = null;
         }
         // Tag names
         JSONArray tagsArray = (JSONArray) object.get("tags");
